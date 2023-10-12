@@ -80,7 +80,8 @@ void DFS(ALGraph G, int i) {         //邻接表的深度优先递归
 
 void DFSTraverse(ALGraph G) {        //邻接表的深度遍历操作
     _for(i, 0, G.vexnum)visited[i] = false;         //初始设置为未访问 
-    _for(i, 0, G.vexnum)if (!visited[i])
+    _for(i, 0, G.vexnum)
+        if (!visited[i])
             DFS(G, i);                //对未访问的顶点调用DFS，若是连通图只会执行一次 
 }
 

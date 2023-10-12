@@ -90,7 +90,8 @@ void DFS(ALGraph G, int i) {
 void DFSTraverse(ALGraph G) {
 
     memset(visited, false, sizeof(visited));
-    _for(i, 0, G.vexnum)if (!visited[i])
+    _for(i, 0, G.vexnum)
+        if (!visited[i])
             DFS(G, i);
 }
 

@@ -1,10 +1,11 @@
 ﻿#include <iostream>
+#include <stack>
 
 using namespace std;
 
 #pragma region 创建邻接表存储的无向图
 
-#define MaxVertexNum 100    //图中顶点数目最大值
+#define MaxVertexNum 10   //图中顶点数目最大值
 #define VertexType char
 #define _for(i, a, b) for(int i=(a);i<(b);i++)
 
@@ -72,8 +73,8 @@ void CreateALGraph(ALGraph &G) {
 
 bool visited[MaxVertexNum];
 
-void DFS(ALGraph G, int i)          //邻接表的深度优先递归
-{
+void DFS(ALGraph G, int i) {         //邻接表的深度优先递归
+
     ArcNode *p;
     visited[i] = true;                //访问过了该顶点，标记为TRUE
     cout << G.vertices[i].data << " ";
@@ -87,47 +88,56 @@ void DFS(ALGraph G, int i)          //邻接表的深度优先递归
 
 void DFSTraverse(ALGraph G) {        //邻接表的深度遍历操作
     _for(i, 0, G.vexnum)visited[i] = false;         //初始设置为未访问 
-    _for(i, 0, G.vexnum)if (!visited[i])
+    _for(i, 0, G.vexnum)
+        if (!visited[i])
             DFS(G, i);                //对未访问的顶点调用DFS，若是连通图只会执行一次 
 }
 
 #pragma endregion
 
-//P223.4
-//写出从图的邻接表表示转换成邻接矩阵表示的算法。
+//P232.3
+//写出图的深度优先搜索DFS算法的非递归算法(图采用邻接表形式)。
 
-void Convert(ALGraph &G, int arcs[MaxVertexNum][MaxVertexNum]) {
+bool visit[MaxVertexNum];
 
-    _for(i, 0, G.vexnum) {
-        ArcNode *p = G.vertices[i].first;
+void DFS_Non_RC(ALGraph &G, int v) {
+
+    memset(visit, false, sizeof(visit));
+    stack<int> s;
+    s.push(v);
+    visit[v] = true;
+    while (!s.empty()) {
+        ArcNode *p = G.vertices[s.top()].first;
+        cout << G.vertices[s.top()].data << " ";
+        s.pop();
         while (p) {
-            arcs[i][p->adjvex] = 1;
+            if (!visit[p->adjvex]) {
+                s.push(p->adjvex);
+                visit[p->adjvex] = true;
+            }
             p = p->next;
         }
     }
 }
 
 int main() {
-    int arcs[MaxVertexNum][MaxVertexNum];
-    memset(arcs, 0, sizeof(arcs));
     ALGraph G;
     CreateALGraph(G);
     cout << endl;
     cout << "DFS:" << endl;
     DFSTraverse(G);
     cout << endl;
-    cout << endl;
-    cout << "转换后的邻接矩阵:" << endl;
-    Convert(G, arcs);
-    _for(i, 0, G.vexnum) {
-        _for(j, 0, G.vexnum)cout << arcs[i][j] << " ";
-        cout << endl;
-    }
-
+    DFS_Non_RC(G, 0);
     return 0;
 }
 
 /*
+
+PS:
+答案是对的，至于为什么两个DFS顺序不一样
+是因为非递归DFS遍历用头插法插入的边表（逆置的）时
+存入栈中正好把顺序给正过来了。
+
 input:
 
 5 7
@@ -140,6 +150,6 @@ b e
 c d
 d e
 
-
 生成图的链接：https://s3.ax1x.com/2021/02/18/yW59vF.png
+
 */

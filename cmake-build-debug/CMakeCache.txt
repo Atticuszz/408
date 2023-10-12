@@ -113,7 +113,7 @@ CMAKE_FIND_PACKAGE_REDIRECTS_DIR:STATIC=C:/Users/18317/OneDrive/c++/Wangdao-Data
 CMAKE_GNUtoMS:BOOL=OFF
 
 //Install path prefix, prepended onto install directories.
-CMAKE_INSTALL_PREFIX:PATH=C:/Program Files (x86)/Wangdao_Data_Structures_code
+CMAKE_INSTALL_PREFIX:PATH=C:/Program Files (x86)/Project
 
 //Path to a program.
 CMAKE_LINKER:FILEPATH=C:/Users/18317/AppData/Local/Programs/CLion/bin/mingw/bin/ld.exe
@@ -247,15 +247,6 @@ Project_IS_TOP_LEVEL:STATIC=ON
 
 //Value Computed by CMake
 Project_SOURCE_DIR:STATIC=C:/Users/18317/OneDrive/c++/Wangdao-Data-Structures-code
-
-//Value Computed by CMake
-Wangdao_Data_Structures_code_BINARY_DIR:STATIC=C:/Users/18317/OneDrive/c++/Wangdao-Data-Structures-code/cmake-build-debug
-
-//Value Computed by CMake
-Wangdao_Data_Structures_code_IS_TOP_LEVEL:STATIC=ON
-
-//Value Computed by CMake
-Wangdao_Data_Structures_code_SOURCE_DIR:STATIC=C:/Users/18317/OneDrive/c++/Wangdao-Data-Structures-code
 
 
 ########################

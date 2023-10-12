@@ -659,7 +659,7 @@
 				}
 			],
 			"type" : "PATH",
-			"value" : "C:/Program Files (x86)/Wangdao_Data_Structures_code"
+			"value" : "C:/Program Files (x86)/Project"
 		},
 		{
 			"name" : "CMAKE_LINKER",
@@ -1279,42 +1279,6 @@
 		},
 		{
 			"name" : "Project_SOURCE_DIR",
-			"properties" : 
-			[
-				{
-					"name" : "HELPSTRING",
-					"value" : "Value Computed by CMake"
-				}
-			],
-			"type" : "STATIC",
-			"value" : "C:/Users/18317/OneDrive/c++/Wangdao-Data-Structures-code"
-		},
-		{
-			"name" : "Wangdao_Data_Structures_code_BINARY_DIR",
-			"properties" : 
-			[
-				{
-					"name" : "HELPSTRING",
-					"value" : "Value Computed by CMake"
-				}
-			],
-			"type" : "STATIC",
-			"value" : "C:/Users/18317/OneDrive/c++/Wangdao-Data-Structures-code/cmake-build-debug"
-		},
-		{
-			"name" : "Wangdao_Data_Structures_code_IS_TOP_LEVEL",
-			"properties" : 
-			[
-				{
-					"name" : "HELPSTRING",
-					"value" : "Value Computed by CMake"
-				}
-			],
-			"type" : "STATIC",
-			"value" : "ON"
-		},
-		{
-			"name" : "Wangdao_Data_Structures_code_SOURCE_DIR",
 			"properties" : 
 			[
 				{

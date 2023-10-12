@@ -1,9 +1,11 @@
 ﻿#include <iostream>
 #include <stack>
+#include <queue>
+#include <vector>
 
 using namespace std;
 
-#pragma region 创建邻接表存储的无向图
+#pragma region 创建邻接表存储的有向图
 
 #define MaxVertexNum 10   //图中顶点数目最大值
 #define VertexType char
@@ -45,7 +47,7 @@ void CreateALGraph(ALGraph &G) {
     }
     _for(k, 0, G.arcnum) {
         VertexType e1, e2;
-        cout << "输入第" << k + 1 << "条边的顶点：" << endl;
+        cout << "输入第" << k + 1 << "条边（v1 -> v2）的顶点：" << endl;
         cin >> e1 >> e2;
         ArcNode *e = new ArcNode;
         if (!e) {
@@ -59,15 +61,6 @@ void CreateALGraph(ALGraph &G) {
         e->adjvex = vj;                                    //这三步，类似于单链表的头插法
         e->next = G.vertices[vi].first;
         G.vertices[vi].first = e;
-
-        e = new ArcNode;
-        if (!e) {
-            cout << "内存申请失败！" << endl;
-            exit(0);
-        }
-        e->adjvex = vi;
-        e->next = G.vertices[vj].first;
-        G.vertices[vj].first = e;
     }
 }
 
@@ -88,67 +81,85 @@ void DFS(ALGraph G, int i) {         //邻接表的深度优先递归
 
 void DFSTraverse(ALGraph G) {        //邻接表的深度遍历操作
     _for(i, 0, G.vexnum)visited[i] = false;         //初始设置为未访问 
-    _for(i, 0, G.vexnum)if (!visited[i])
+    _for(i, 0, G.vexnum)
+        if (!visited[i])
             DFS(G, i);                //对未访问的顶点调用DFS，若是连通图只会执行一次 
 }
 
 #pragma endregion
 
-//P232.3
-//写出图的深度优先搜索DFS算法的非递归算法(图采用邻接表形式)。
+//P233.5
+//假设图用邻接表表示, 设计一个算法, 输出从顶点Vi到顶点Vj的所有简单路径
 
-bool visit[MaxVertexNum];
+bool visit[MaxVertexNum] = {false};
+vector<int> path;
+bool flag = false;
 
-void DFS_Non_RC(ALGraph &G, int v) {
+void FindPath(ALGraph G, int i, int j) {
 
-    memset(visit, false, sizeof(visit));
-    stack<int> s;
-    s.push(v);
-    visit[v] = true;
-    while (!s.empty()) {
-        ArcNode *p = G.vertices[s.top()].first;
-        cout << G.vertices[s.top()].data << " ";
-        s.pop();
+    path.push_back(i);
+    if (i == j) {
+        _for(i, 0, path.size()) {
+            if (i < path.size() - 1)
+                cout << G.vertices[path[i]].data << "->";
+            else
+                cout << G.vertices[path[i]].data << endl;
+        }
+        flag = true;
+        exit(0);    //return还会多输出一次路径
+    } else {
+        visit[i] = true;
+        ArcNode *p = G.vertices[i].first;
         while (p) {
             if (!visit[p->adjvex]) {
-                s.push(p->adjvex);
-                visit[p->adjvex] = true;
+                FindPath(G, p->adjvex, j);
             }
             p = p->next;
         }
+        visit[i] = false;
+        path.pop_back();
     }
+}
+
+void PrintPath(ALGraph G, VertexType vi, VertexType vj) {
+
+    FindPath(G, LocateVex(G, vi), LocateVex(G, vj));
 }
 
 int main() {
     ALGraph G;
     CreateALGraph(G);
+
     cout << endl;
     cout << "DFS:" << endl;
+
     DFSTraverse(G);
+
     cout << endl;
-    DFS_Non_RC(G, 0);
+    cout << endl;
+    cout << "路径如下：" << endl;
+    PrintPath(G, 'c', 'd');
+    if (!flag) {
+        cout << "路径不存在！" << endl;
+    }
     return 0;
 }
 
 /*
-
-PS:
-答案是对的，至于为什么两个DFS顺序不一样
-是因为非递归DFS遍历用头插法插入的边表（逆置的）时
-存入栈中正好把顺序给正过来了。
-
 input:
 
-5 7
-a b c d e
-a b
-a e
-b c
-b d
-b e
-c d
-d e
 
-生成图的链接：https://s3.ax1x.com/2021/02/18/yW59vF.png
+6 8
+a b c d e f
+a b
+a d
+b e
+c e
+c f
+d b
+e d
+f f
+
+有向图链接：https://s3.ax1x.com/2021/02/19/yhqBOx.png
 
 */

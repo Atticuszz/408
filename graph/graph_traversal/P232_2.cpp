@@ -1,11 +1,8 @@
 ﻿#include <iostream>
-#include <stack>
-#include <queue>
-#include <vector>
 
 using namespace std;
 
-#pragma region 创建邻接表存储的有向图
+#pragma region 创建邻接表存储的无向图
 
 #define MaxVertexNum 10   //图中顶点数目最大值
 #define VertexType char
@@ -47,7 +44,7 @@ void CreateALGraph(ALGraph &G) {
     }
     _for(k, 0, G.arcnum) {
         VertexType e1, e2;
-        cout << "输入第" << k + 1 << "条边（v1 -> v2）的顶点：" << endl;
+        cout << "输入第" << k + 1 << "条边的顶点：" << endl;
         cin >> e1 >> e2;
         ArcNode *e = new ArcNode;
         if (!e) {
@@ -61,6 +58,15 @@ void CreateALGraph(ALGraph &G) {
         e->adjvex = vj;                                    //这三步，类似于单链表的头插法
         e->next = G.vertices[vi].first;
         G.vertices[vi].first = e;
+
+        e = new ArcNode;
+        if (!e) {
+            cout << "内存申请失败！" << endl;
+            exit(0);
+        }
+        e->adjvex = vi;
+        e->next = G.vertices[vj].first;
+        G.vertices[vj].first = e;
     }
 }
 
@@ -81,84 +87,88 @@ void DFS(ALGraph G, int i) {         //邻接表的深度优先递归
 
 void DFSTraverse(ALGraph G) {        //邻接表的深度遍历操作
     _for(i, 0, G.vexnum)visited[i] = false;         //初始设置为未访问 
-    _for(i, 0, G.vexnum)if (!visited[i])
+    _for(i, 0, G.vexnum)
+        if (!visited[i])
             DFS(G, i);                //对未访问的顶点调用DFS，若是连通图只会执行一次 
 }
 
 #pragma endregion
 
-//P233.5
-//假设图用邻接表表示, 设计一个算法, 输出从顶点Vi到顶点Vj的所有简单路径
+//P232.2
+//试设计一个算法, 判断一个无向图G是否为一棵树。若是一棵树, 则算法返回true
+//否则返回false
 
-bool visit[MaxVertexNum] = {false};
-vector<int> path;
-bool flag = false;
+bool visit[MaxVertexNum];
+int Enum = 0, Vnum = 0;
 
-void FindPath(ALGraph G, int i, int j) {
+void DFS_2(ALGraph G, int i) {         //邻接表的深度优先递归
 
-    path.push_back(i);
-    if (i == j) {
-        _for(i, 0, path.size()) {
-            if (i < path.size() - 1)
-                cout << G.vertices[path[i]].data << "->";
-            else
-                cout << G.vertices[path[i]].data << endl;
-        }
-        flag = true;
-        exit(0);    //return还会多输出一次路径
-    } else {
-        visit[i] = true;
-        ArcNode *p = G.vertices[i].first;
-        while (p) {
-            if (!visit[p->adjvex]) {
-                FindPath(G, p->adjvex, j);
-            }
-            p = p->next;
-        }
-        visit[i] = false;
-        path.pop_back();
+    ArcNode *p;
+    visit[i] = true;                //访问过了该顶点，标记为TRUE
+    Vnum++;
+    p = G.vertices[i].first;        //让p指向边表第一个结点 
+    while (p) {                     //在边表内遍历 
+        Enum++;
+        if (!visit[p->adjvex])    //对未访问的邻接顶点递归调用 
+            DFS_2(G, p->adjvex);
+        p = p->next;
     }
 }
 
-void PrintPath(ALGraph G, VertexType vi, VertexType vj) {
+bool isTree(ALGraph G) {
 
-    FindPath(G, LocateVex(G, vi), LocateVex(G, vj));
+    memset(visit, false, sizeof(visit));
+    DFS_2(G, 1);
+    if (G.vexnum == Vnum && Enum == 2 * (G.vexnum - 1))
+        return true;
+    else
+        return false;
 }
 
 int main() {
     ALGraph G;
     CreateALGraph(G);
-
     cout << endl;
     cout << "DFS:" << endl;
-
     DFSTraverse(G);
-
     cout << endl;
-    cout << endl;
-    cout << "路径如下：" << endl;
-    PrintPath(G, 'c', 'd');
-    if (!flag) {
-        cout << "路径不存在！" << endl;
-    }
+    if (isTree(G))
+        cout << "图G是一棵树" << endl;
+    else
+        cout << "图G不是一棵树" << endl;
     return 0;
 }
 
 /*
 input:
 
-
-6 8
-a b c d e f
+5 7
+a b c d e
 a b
+a e
+b c
+b d
+b e
+c d
+d e
+
+
+生成图的链接：https://s3.ax1x.com/2021/02/18/yW59vF.png
+
+普通的树：
+
+7 6
+a b c d e f g
+a b
+a c
 a d
 b e
-c e
-c f
-d b
-e d
-f f
+b f
+d g
 
-有向图链接：https://s3.ax1x.com/2021/02/19/yhqBOx.png
+
+                                            a
+                                        b   c   d
+                                       e f        g
 
 */

@@ -4,7 +4,7 @@ using namespace std;
 
 #pragma region 创建邻接表存储的无向图
 
-#define MaxVertexNum 10   //图中顶点数目最大值
+#define MaxVertexNum 100    //图中顶点数目最大值
 #define VertexType char
 #define _for(i, a, b) for(int i=(a);i<(b);i++)
 
@@ -72,8 +72,8 @@ void CreateALGraph(ALGraph &G) {
 
 bool visited[MaxVertexNum];
 
-void DFS(ALGraph G, int i) {         //邻接表的深度优先递归
-
+void DFS(ALGraph G, int i)          //邻接表的深度优先递归
+{
     ArcNode *p;
     visited[i] = true;                //访问过了该顶点，标记为TRUE
     cout << G.vertices[i].data << " ";
@@ -87,54 +87,44 @@ void DFS(ALGraph G, int i) {         //邻接表的深度优先递归
 
 void DFSTraverse(ALGraph G) {        //邻接表的深度遍历操作
     _for(i, 0, G.vexnum)visited[i] = false;         //初始设置为未访问 
-    _for(i, 0, G.vexnum)if (!visited[i])
+    _for(i, 0, G.vexnum)
+        if (!visited[i])
             DFS(G, i);                //对未访问的顶点调用DFS，若是连通图只会执行一次 
 }
 
 #pragma endregion
 
-//P232.2
-//试设计一个算法, 判断一个无向图G是否为一棵树。若是一棵树, 则算法返回true
-//否则返回false
+//P223.4
+//写出从图的邻接表表示转换成邻接矩阵表示的算法。
 
-bool visit[MaxVertexNum];
-int Enum = 0, Vnum = 0;
+void Convert(ALGraph &G, int arcs[MaxVertexNum][MaxVertexNum]) {
 
-void DFS_2(ALGraph G, int i) {         //邻接表的深度优先递归
-
-    ArcNode *p;
-    visit[i] = true;                //访问过了该顶点，标记为TRUE
-    Vnum++;
-    p = G.vertices[i].first;        //让p指向边表第一个结点 
-    while (p) {                     //在边表内遍历 
-        Enum++;
-        if (!visit[p->adjvex])    //对未访问的邻接顶点递归调用 
-            DFS_2(G, p->adjvex);
-        p = p->next;
+    _for(i, 0, G.vexnum) {
+        ArcNode *p = G.vertices[i].first;
+        while (p) {
+            arcs[i][p->adjvex] = 1;
+            p = p->next;
+        }
     }
 }
 
-bool isTree(ALGraph G) {
-
-    memset(visit, false, sizeof(visit));
-    DFS_2(G, 1);
-    if (G.vexnum == Vnum && Enum == 2 * (G.vexnum - 1))
-        return true;
-    else
-        return false;
-}
-
 int main() {
+    int arcs[MaxVertexNum][MaxVertexNum];
+    memset(arcs, 0, sizeof(arcs));
     ALGraph G;
     CreateALGraph(G);
     cout << endl;
     cout << "DFS:" << endl;
     DFSTraverse(G);
     cout << endl;
-    if (isTree(G))
-        cout << "图G是一棵树" << endl;
-    else
-        cout << "图G不是一棵树" << endl;
+    cout << endl;
+    cout << "转换后的邻接矩阵:" << endl;
+    Convert(G, arcs);
+    _for(i, 0, G.vexnum) {
+        _for(j, 0, G.vexnum)cout << arcs[i][j] << " ";
+        cout << endl;
+    }
+
     return 0;
 }
 
@@ -153,21 +143,4 @@ d e
 
 
 生成图的链接：https://s3.ax1x.com/2021/02/18/yW59vF.png
-
-普通的树：
-
-7 6
-a b c d e f g
-a b
-a c
-a d
-b e
-b f
-d g
-
-
-                                            a
-                                        b   c   d
-                                       e f        g
-
 */
