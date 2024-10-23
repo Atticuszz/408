@@ -218,83 +218,44 @@ int main() {
 ## 2014_code_getwpl
 
 ```c++
-#include <stdio.h>
+#include <iostream>
+#include <vector>
 
-#include <stdlib.h>
+struct TreeNode {
+    int weight;
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode(int w) : weight(w), left(nullptr), right(nullptr) {}
+};
 
-  
-
-typedef struct treeNode {
-
-int weight;
-
-struct treeNode* left, * right;
-
-}TNode;
-
-  
-
-/**
-
-* 创建二叉树
-
-*/
-
-void create(TNode* node, int c[], int pos, int length) {
-
-if (pos < length) {//填入数据
-
-node->weight = c[pos];
-
-if (pos * 2 + 1 < length) node->left = (TNode*)malloc(sizeof(TNode));
-
-if (pos * 2 + 2 < length) node->right = (TNode*)malloc(sizeof(TNode));
-
-create(node->left, c, pos * 2 + 1, length);
-
-create(node->right, c, pos * 2 + 2, length);
-
+void create(TreeNode* node, const std::vector<int>& c, int pos) {
+    if (pos < c.size()) {
+        node->weight = c[pos];
+        if (pos * 2 + 1 < c.size()) {
+            node->left = new TreeNode(0);
+            create(node->left, c, pos * 2 + 1);
+        }
+        if (pos * 2 + 2 < c.size()) {
+            node->right = new TreeNode(0);
+            create(node->right, c, pos * 2 + 2);
+        }
+    }
 }
 
+int getWPL(TreeNode* root, int depth) {
+    if (root == nullptr) return 0;
+    if (root->left == nullptr && root->right == nullptr) {
+        return depth * root->weight;
+    }
+    return getWPL(root->left, depth + 1) + getWPL(root->right, depth + 1);
 }
-
-  
-
-int getWPL(TNode* root, int depth) {
-
-if (root != NULL) {
-
-int leftWeight = 0;
-
-int rightWeight = 0;
-
-if (root->left != NULL)leftWeight = getWPL(root->left, depth + 1);
-
-if (root->right != NULL)rightWeight = getWPL(root->right, depth + 1);
-
-return depth * root->weight + leftWeight + rightWeight;
-
-}
-
-else return 0;
-
-}
-
-  
 
 int main() {
-
-TNode* t = (TNode*)malloc(sizeof(TNode));
-
-int c[] = { 54,4654,7565,234,436546,876876,353,757,2,345,23,445,1,235,0,6346 };
-
-create(t, c, 0, 16);
-
-int i = getWPL(t, 0);
-
-printf("%d", i);
-
-return 0;
-
+    std::vector<int> c = {54, 4654, 7565, 234, 436546, 876876, 353, 757, 2, 345, 23, 445, 1, 235, 0, 6346};
+    TreeNode* root = new TreeNode(0);
+    create(root, c, 0);
+    int wpl = getWPL(root, 0);
+    std::cout << "WPL: " << wpl << std::endl;
+    return 0;
 }
 ```
