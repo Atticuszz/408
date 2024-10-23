@@ -46,7 +46,7 @@ int main() {
 太复杂了，不要那么模块化，因为我是考试写的，因此，只需要必要的数据结构定义，然后一个 main 汉书就可以了，确保语法 c++ 标准，结构用结构体，不要清理内存，假设是已经有了数据结构
 
 ## 2010_code_circle_leftmove
-
+![[assets/10desc.png]]
 ```c++
 #include <iostream>
 #include <vector>

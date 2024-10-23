@@ -23,21 +23,6 @@
             }
           },
           {
-            "id": "20cfe8c019ef0d5b",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "2010_code_circle_leftmove.md",
-                "mode": "source",
-                "backlinks": true,
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "2010_code_circle_leftmove"
-            }
-          },
-          {
             "id": "f754bf7cf46eeaba",
             "type": "leaf",
             "state": {
@@ -53,7 +38,7 @@
             }
           }
         ],
-        "currentTab": 2
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -247,16 +232,16 @@
   },
   "active": "f754bf7cf46eeaba",
   "lastOpenFiles": [
-    "2010_code_circle_leftmove.md",
     "Untitled.md",
+    "keys/exam.md",
+    "2010_code_circle_leftmove.md",
+    "keys/Untitled.md",
     "assets/11desc.png",
     "assets/10desc.png",
-    "keys/exam.md",
     "assets/2009_code_lastk/09.png",
     "assets/2009_code_lastk/09desc.png",
     "assets/2009_code_lastk",
     "assets",
-    "keys/Untitled.md",
     "keys",
     "Reference/blog/Steph Ango/assets/what-can-we-remove/steph-ango-20241021214411874.png",
     "Reference/blog/Steph Ango/assets/what-can-we-remove/what-can-we-remove-20241021214302714.png",
